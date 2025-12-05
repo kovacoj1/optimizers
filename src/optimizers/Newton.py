@@ -1,16 +1,20 @@
 import torch
 from torch.autograd import grad
-import functools
 
 
 class Newton(torch.optim.Optimizer):
     def __init__(self, params):
         super().__init__(params, {})
 
+        self.numel = sum(
+            p.numel() for group in self.param_groups for p in group['params']
+        )
+    
     @property
-    @functools.lru_cache(maxsize=1)
-    def numel(self):
-        return sum(p.numel() for group in self.param_groups for p in group['params'])
+    def params(self):
+        return torch.cat([
+            p.flatten() for group in self.param_groups for p in group['params']
+        ])
 
     @torch.no_grad()
     def update_weights(self, update):
@@ -34,6 +38,7 @@ class Newton(torch.optim.Optimizer):
             H[idx] = torch.hstack([
                 d.view(1, -1) for d in grad(g[idx], self.param_groups[0]['params'], create_graph=True, retain_graph=True)
             ])
+        H += 1e-4 * torch.eye(self.numel) # damping for num. stability
 
         self.update_weights(
             torch.linalg.solve(H, -g)
