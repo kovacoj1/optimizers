@@ -1,0 +1,49 @@
+
+# dev
+.vscode/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.env
+*.venv
+env/
+venv/
+ENV/
+*.egg-info/
+dist/
+build/
+*.log
+
+# uv (Python package manager)
+.uv/
+uv.lock
+
+# Jupyter
+.ipynb_checkpoints/
+# *.ipynb
+# *.nbconvert.ipynb
+
+# C/C++
+bin/
+*.o
+*.obj
+*.exe
+*.out
+*.so
+*.dll
+*.a
+*.lib
+*.dSYM/
+*.cproj
+*.vcxproj
+*.sln
+
+# General
+.DS_Store
+*.swp
+*.bak
+*.tmp
+*.~ 
